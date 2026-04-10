@@ -50,42 +50,238 @@ const PhantomApp = {
     // REGISTRATION
     // ══════════════════════════════════════
 
+    // ──────────────────────────────────────
+    // REGISTRATION WHITELIST
+    // Update this map with the actual student roster before deployment.
+    // Keys are Registration IDs (must match email prefix: {regId}@students.au.edu.pk).
+    // ──────────────────────────────────────
+    _WHITELIST: {
+        // Group A
+        'au-bscs-f21-001': { name: 'Hamid Rafique',        group: 'A' },
+        'au-bscs-f21-002': { name: 'Ahmed Ali',             group: 'A' },
+        'au-bscs-f21-003': { name: 'Usman Khan',            group: 'A' },
+        'au-bscs-f21-004': { name: 'Bilal Hassan',          group: 'A' },
+        'au-bscs-f21-005': { name: 'Faisal Mahmood',        group: 'A' },
+        'au-bscs-f21-006': { name: 'Saad Iqbal',            group: 'A' },
+        'au-bscs-f21-007': { name: 'Zain Ul Abidin',        group: 'A' },
+        'au-bscs-f21-008': { name: 'Omar Farooq',           group: 'A' },
+        'au-bscs-f21-009': { name: 'Talha Mehmood',         group: 'A' },
+        'au-bscs-f21-010': { name: 'Shahzaib Ahmed',        group: 'A' },
+        'au-bscs-f21-011': { name: 'Asad Raza',             group: 'A' },
+        'au-bscs-f21-012': { name: 'Haris Nawaz',           group: 'A' },
+        'au-bscs-f21-013': { name: 'Muneeb Ur Rahman',      group: 'A' },
+        'au-bscs-f21-014': { name: 'Danyal Sheikh',         group: 'A' },
+        'au-bscs-f21-015': { name: 'Hamza Tariq',           group: 'A' },
+        'au-bscs-f21-016': { name: 'Aqib Javed',            group: 'A' },
+        'au-bscs-f21-017': { name: 'Waqar Hussain',         group: 'A' },
+        'au-bscs-f21-018': { name: 'Nasir Mahmood',         group: 'A' },
+        'au-bscs-f21-019': { name: 'Farhan Aziz',           group: 'A' },
+        'au-bscs-f21-020': { name: 'Taimoor Baig',          group: 'A' },
+        // Group B
+        'au-bscs-f21-021': { name: 'Kamran Siddiqui',       group: 'B' },
+        'au-bscs-f21-022': { name: 'Irfan Ullah',           group: 'B' },
+        'au-bscs-f21-023': { name: 'Sohaib Anwar',          group: 'B' },
+        'au-bscs-f21-024': { name: 'Junaid Khalid',         group: 'B' },
+        'au-bscs-f21-025': { name: 'Rizwan Ghafoor',        group: 'B' },
+        'au-bscs-f21-026': { name: 'Adeel Bukhari',         group: 'B' },
+        'au-bscs-f21-027': { name: 'Salman Niaz',           group: 'B' },
+        'au-bscs-f21-028': { name: 'Imran Chaudhry',        group: 'B' },
+        'au-bscs-f21-029': { name: 'Qasim Rauf',            group: 'B' },
+        'au-bscs-f21-030': { name: 'Naveed Akhtar',         group: 'B' },
+        'au-bscs-f21-031': { name: 'Rehan Babar',           group: 'B' },
+        'au-bscs-f21-032': { name: 'Shahid Pervaiz',        group: 'B' },
+        'au-bscs-f21-033': { name: 'Waseem Akram',          group: 'B' },
+        'au-bscs-f21-034': { name: 'Noman Aslam',           group: 'B' },
+        'au-bscs-f21-035': { name: 'Yasir Latif',           group: 'B' },
+        'au-bscs-f21-036': { name: 'Zubair Qadir',          group: 'B' },
+        'au-bscs-f21-037': { name: 'Fahad Mirza',           group: 'B' },
+        'au-bscs-f21-038': { name: 'Awais Hafeez',          group: 'B' },
+        'au-bscs-f21-039': { name: 'Naeem Sadiq',           group: 'B' },
+        'au-bscs-f21-040': { name: 'Khurram Shehzad',       group: 'B' },
+        // Group C
+        'au-bscs-f21-041': { name: 'Tariq Nawaz',           group: 'C' },
+        'au-bscs-f21-042': { name: 'Abrar Hussain',         group: 'C' },
+        'au-bscs-f21-043': { name: 'Javed Iqbal',           group: 'C' },
+        'au-bscs-f21-044': { name: 'Shehryar Malik',        group: 'C' },
+        'au-bscs-f21-045': { name: 'Zahid Mehmood',         group: 'C' },
+        'au-bscs-f21-046': { name: 'Raza Ul Haq',           group: 'C' },
+        'au-bscs-f21-047': { name: 'Babar Azam',            group: 'C' },
+        'au-bscs-f21-048': { name: 'Shahbaz Gill',          group: 'C' },
+        'au-bscs-f21-049': { name: 'Mohsin Naqvi',          group: 'C' },
+        'au-bscs-f21-050': { name: 'Arshad Waheed',         group: 'C' },
+        'au-bscs-f21-051': { name: 'Farrukh Tashkentov',    group: 'C' },
+        'au-bscs-f21-052': { name: 'Ghulam Mustafa',        group: 'C' },
+        'au-bscs-f21-053': { name: 'Habib Ur Rahman',       group: 'C' },
+        'au-bscs-f21-054': { name: 'Imtiaz Ahmad',          group: 'C' },
+        'au-bscs-f21-055': { name: 'Khalid Mehmood',        group: 'C' },
+        'au-bscs-f21-056': { name: 'Liaquat Ali',           group: 'C' },
+        'au-bscs-f21-057': { name: 'Muzammil Hussain',      group: 'C' },
+        'au-bscs-f21-058': { name: 'Naseem Akhtar',         group: 'C' },
+        'au-bscs-f21-059': { name: 'Pervaiz Bashir',        group: 'C' },
+        'au-bscs-f21-060': { name: 'Qaiser Mahmood',        group: 'C' }
+    },
+
     _showRegistration() {
         const overlay = document.getElementById('registration-overlay');
         if (overlay) overlay.classList.add('active');
 
-        const form = document.getElementById('reg-form');
-        const errorEl = document.getElementById('reg-error');
+        // Support both old form id (#reg-form) and new form id (#registration-form)
+        const form = document.getElementById('reg-form') || document.getElementById('registration-form');
+        if (!form) return;
 
-        if (form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                errorEl.textContent = '';
-                errorEl.style.display = 'none';
+        // Ensure error element exists
+        let errorEl = document.getElementById('reg-error');
+        if (!errorEl) {
+            errorEl = document.createElement('p');
+            errorEl.id = 'reg-error';
+            errorEl.className = 'error-msg';
+            errorEl.style.cssText = 'display:none;color:#ff0040;margin-top:8px;font-size:0.85rem;';
+            form.appendChild(errorEl);
+        }
 
-                const alias = document.getElementById('reg-alias').value.trim();
-                const fullName = document.getElementById('reg-fullname').value.trim();
-                const affiliation = document.getElementById('reg-affiliation').value.trim();
+        // Identity-confirmation element (already in index.html; create if absent)
+        let identityEl = document.getElementById('identity-confirmation');
+        if (!identityEl) {
+            identityEl = document.createElement('p');
+            identityEl.id = 'identity-confirmation';
+            identityEl.className = 'reg-identity-confirmation';
+            identityEl.style.display = 'none';
+            const regIdInput = document.getElementById('reg-regid');
+            if (regIdInput && regIdInput.parentNode) {
+                regIdInput.parentNode.insertBefore(identityEl, regIdInput.nextSibling);
+            } else {
+                form.insertBefore(identityEl, form.firstChild.nextSibling);
+            }
+        }
 
-                const submitBtn = document.getElementById('reg-submit');
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'CONNECTING...';
-
-                const result = await PhantomScoreboard.registerUser(alias, fullName, affiliation);
-
-                if (result.success) {
-                    overlay.classList.remove('active');
-                    PhantomEffects.noiseBurst();
-                    setTimeout(() => this._startChallenge(), 500);
+        // Live identity confirmation as user types regId
+        const regIdInput = document.getElementById('reg-regid');
+        if (regIdInput) {
+            regIdInput.addEventListener('input', () => {
+                const regId = regIdInput.value.trim().toLowerCase();
+                const entry = this._WHITELIST[regId];
+                if (entry) {
+                    identityEl.textContent = `\u2713 Identity confirmed: ${entry.name}`;
+                    identityEl.className = 'reg-identity-confirmation confirmed';
+                    identityEl.style.display = 'block';
                 } else {
-                    errorEl.textContent = result.error;
-                    errorEl.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'INITIATE SIGNAL INTERCEPT';
-                    PhantomEffects.shake();
+                    identityEl.textContent = '';
+                    identityEl.style.display = 'none';
                 }
             });
         }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorEl.textContent = '';
+            errorEl.style.display = 'none';
+
+            const regId = document.getElementById('reg-regid')
+                ? document.getElementById('reg-regid').value.trim().toLowerCase()
+                : '';
+            const email = document.getElementById('reg-email')
+                ? document.getElementById('reg-email').value.trim().toLowerCase()
+                : '';
+            // alias and affiliation — derive from regId / whitelist when not present in form
+            const aliasInput = document.getElementById('reg-alias');
+            const affiliationInput = document.getElementById('reg-affiliation');
+            const alias = aliasInput ? aliasInput.value.trim() : regId.replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
+            const affiliation = affiliationInput ? affiliationInput.value.trim() : 'Air University';
+
+            const submitBtn = form.querySelector('[type=submit]') || document.getElementById('reg-submit');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'CONNECTING...';
+            }
+
+            const showError = (msg) => {
+                errorEl.textContent = msg;
+                errorEl.style.display = 'block';
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'INITIATE SIGNAL INTERCEPT';
+                }
+                if (typeof PhantomEffects !== 'undefined') PhantomEffects.shake();
+            };
+
+            // 1. Validate regId against whitelist
+            const whitelistEntry = this._WHITELIST[regId];
+            if (!whitelistEntry) {
+                showError('INVALID CREDENTIALS \u2014 ACCESS DENIED');
+                return;
+            }
+
+            // 2. Validate email format
+            const expectedEmail = `${regId}@students.au.edu.pk`;
+            if (email !== expectedEmail) {
+                showError('INVALID CREDENTIALS \u2014 ACCESS DENIED');
+                return;
+            }
+
+            // 3. Validate alias
+            const cleanAlias = alias.replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
+            if (cleanAlias.length < 2) {
+                showError('INVALID CREDENTIALS \u2014 ACCESS DENIED');
+                return;
+            }
+
+            // 4. Firebase checks (duplicate + revoked)
+            if (PhantomScoreboard._isFirebaseReady && PhantomScoreboard.db) {
+                try {
+                    const snapshot = await PhantomScoreboard.db.ref(`registrations/${regId}`).once('value');
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        if (data && data.revoked === true) {
+                            showError('ACCESS SUSPENDED \u2014 CONTACT ADMIN TO RESTORE YOUR SESSION.');
+                        } else {
+                            showError('TERMINAL LOCKED \u2014 THIS IDENTITY HAS ALREADY INITIATED A SESSION. CONTACT ADMIN TO REQUEST ACCESS.');
+                        }
+                        return;
+                    }
+                } catch (fbErr) {
+                    console.warn('[App] Firebase pre-check failed:', fbErr.message);
+                }
+            }
+
+            // 5. Write to Firebase
+            const userData = {
+                name: whitelistEntry.name,
+                alias: cleanAlias,
+                email: email,
+                affiliation: affiliation,
+                group: whitelistEntry.group,
+                revoked: false,
+                registeredAt: firebase && firebase.database
+                    ? firebase.database.ServerValue.TIMESTAMP
+                    : Date.now(),
+                registrationId: regId
+            };
+
+            if (PhantomScoreboard._isFirebaseReady && PhantomScoreboard.db) {
+                try {
+                    await PhantomScoreboard.db.ref(`registrations/${regId}`).set(userData);
+                } catch (fbErr) {
+                    console.warn('[App] Firebase write failed, continuing locally:', fbErr.message);
+                }
+            }
+
+            // 6. Store locally (use same key PhantomScoreboard reads)
+            const localUser = {
+                alias: cleanAlias,
+                fullName: whitelistEntry.name,
+                email: email,
+                affiliation: affiliation,
+                regId: regId,
+                registeredAt: Date.now()
+            };
+            localStorage.setItem(PhantomScoreboard.STORAGE_KEY, JSON.stringify(localUser));
+            PhantomScoreboard._currentUser = localUser;
+
+            // 7. Proceed
+            if (overlay) overlay.classList.remove('active');
+            if (typeof PhantomEffects !== 'undefined') PhantomEffects.noiseBurst();
+            setTimeout(() => this._startChallenge(), 500);
+        });
     },
 
     _showCompletedScreen(user) {

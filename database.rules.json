@@ -1,0 +1,22 @@
+{
+  "rules": {
+    "registrations": {
+      ".read": true,
+      "$regId": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['name', 'alias', 'email', 'group', 'registeredAt'])"
+      }
+    },
+    "scoreboard": {
+      ".read": true,
+      "$alias": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['completedAt', 'timeElapsedMs'])"
+      }
+    },
+    "firstBlood": {
+      ".read": true,
+      ".write": "!data.exists()"
+    }
+  }
+}

@@ -1293,3 +1293,30 @@ body::after {
     content: 'OP: ';
     color: var(--text-dim);
 }
+
+/* ── Registration Note & Identity Confirmation ── */
+.reg-note {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin: 4px 0 8px;
+    font-style: italic;
+}
+
+.reg-identity-confirmation {
+    font-size: 0.82rem;
+    color: var(--accent-green);
+    text-shadow: var(--glow-green);
+    letter-spacing: 1px;
+    margin: 4px 0 8px;
+    padding: 6px 10px;
+    border-left: 2px solid var(--accent-green);
+    background: rgba(0, 255, 65, 0.05);
+    display: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.reg-identity-confirmation.confirmed {
+    display: block;
+}
