@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0xPh4nt0m — Admin Panel</title>
+<style>
+  :root {
+    --bg: #050508;
+    --bg-panel: #0d0d18;
+    --green: #00ff41;
+    --cyan: #00e5ff;
+    --red: #ff0040;
+    --amber: #ffaa00;
+    --dim: #334433;
+    --font: 'Courier New', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--green); min-height: 100vh; }
+
+  /* ── Login Screen ── */
+  #login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; flex-direction: column; gap: 16px;
+  }
+  #login-screen h1 { color: var(--cyan); letter-spacing: 4px; font-size: 1.4rem; }
+  #login-screen p  { color: var(--dim); font-size: 0.75rem; letter-spacing: 2px; }
+  .login-box {
+    border: 1px solid var(--cyan); padding: 32px 40px;
+    background: var(--bg-panel); min-width: 340px; display: flex;
+    flex-direction: column; gap: 14px;
+  }
+  .login-box label { font-size: 0.72rem; color: var(--cyan); letter-spacing: 2px; }
+  .login-box input {
+    background: #060610; border: 1px solid #223322; color: var(--green);
+    font-family: var(--font); padding: 8px 12px; font-size: 0.9rem; width: 100%;
+  }
+  .login-box input:focus { outline: none; border-color: var(--cyan); }
+  #login-error { color: var(--red); font-size: 0.78rem; display: none; }
+
+  /* ── Admin Dashboard ── */
+  #dashboard { display: none; padding: 24px; max-width: 1200px; margin: 0 auto; }
+  .dash-header {
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid #223322; padding-bottom: 12px; margin-bottom: 20px;
+  }
+  .dash-header h1 { color: var(--cyan); font-size: 1.1rem; letter-spacing: 3px; }
+  .dash-meta { font-size: 0.72rem; color: var(--dim); }
+  .dash-meta span { color: var(--green); }
+
+  /* ── Controls bar ── */
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+  .btn {
+    background: transparent; border: 1px solid currentColor; color: var(--cyan);
+    font-family: var(--font); font-size: 0.75rem; letter-spacing: 1px;
+    padding: 6px 14px; cursor: pointer; text-transform: uppercase;
+  }
+  .btn:hover { background: rgba(0,229,255,0.08); }
+  .btn.red { color: var(--red); }
+  .btn.red:hover { background: rgba(255,0,64,0.08); }
+  .btn.green { color: var(--green); }
+  .btn.green:hover { background: rgba(0,255,65,0.08); }
+  .btn.amber { color: var(--amber); }
+  .btn.amber:hover { background: rgba(255,170,0,0.08); }
+
+  select.group-filter {
+    background: #060610; border: 1px solid #223322; color: var(--green);
+    font-family: var(--font); padding: 6px 10px; font-size: 0.75rem;
+  }
+
+  /* ── Stats row ── */
+  .stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; }
+  .stat-box {
+    border: 1px solid #223322; padding: 12px 20px;
+    background: var(--bg-panel); min-width: 120px; text-align: center;
+  }
+  .stat-num { font-size: 1.6rem; color: var(--cyan); }
+  .stat-label { font-size: 0.68rem; color: var(--dim); letter-spacing: 2px; margin-top: 2px; }
+
+  /* ── Registrations Table ── */
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.78rem; }
+  thead tr { border-bottom: 1px solid var(--cyan); }
+  th { color: var(--cyan); padding: 8px 10px; text-align: left; letter-spacing: 1px; font-weight: normal; }
+  td { padding: 7px 10px; border-bottom: 1px solid #0d1a0d; vertical-align: middle; }
+  tr:hover td { background: rgba(0,255,65,0.03); }
+  .badge-revoked  { color: var(--red);   font-size: 0.7rem; }
+  .badge-active   { color: var(--green); font-size: 0.7rem; }
+  .badge-group    { color: var(--amber); font-size: 0.7rem; letter-spacing: 1px; }
+  .access-cell    { white-space: nowrap; }
+  .unlock-note    { color: var(--dim); font-size: 0.65rem; margin-top: 3px; display: none; }
+
+  /* ── Absentees ── */
+  #absentees-section { margin-top: 30px; }
+  #absentees-section h2 { font-size: 0.85rem; color: var(--amber); letter-spacing: 2px; margin-bottom: 10px; }
+  .absentee-list { columns: 3; gap: 20px; font-size: 0.75rem; color: var(--dim); }
+  .absentee-list li { margin-bottom: 4px; list-style: none; }
+
+  /* ── Loader ── */
+  #loader { color: var(--dim); font-size: 0.8rem; text-align: center; padding: 40px; letter-spacing: 2px; }
+  #refresh-bar { font-size: 0.68rem; color: var(--dim); }
+</style>
+</head>
+<body>
+
+<!-- ════════════ LOGIN ════════════ -->
+<div id="login-screen">
+  <div>
+    <h1>⬡ 0xPh4nt0m ADMIN TERMINAL</h1>
+    <p>RESTRICTED ACCESS — AUTHORISED PERSONNEL ONLY</p>
+  </div>
+  <div class="login-box">
+    <label for="adm-user">USERNAME</label>
+    <input type="text" id="adm-user" autocomplete="off" spellcheck="false">
+    <label for="adm-pass">PASSWORD</label>
+    <input type="password" id="adm-pass">
+    <p id="login-error">ACCESS DENIED — INVALID CREDENTIALS</p>
+    <button class="btn" id="adm-login-btn">AUTHENTICATE</button>
+  </div>
+</div>
+
+<!-- ════════════ DASHBOARD ════════════ -->
+<div id="dashboard">
+  <div class="dash-header">
+    <h1>⬡ ADMIN PANEL</h1>
+    <div class="dash-meta">
+      SESSION: <span id="adm-session-id">—</span> &nbsp;|&nbsp;
+      AUTO-REFRESH: <span id="refresh-bar">30s</span> &nbsp;|&nbsp;
+      <button class="btn" id="adm-logout-btn" style="font-size:0.68rem;padding:3px 10px;">LOGOUT</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-box"><div class="stat-num" id="stat-total">—</div><div class="stat-label">TOTAL</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-active">—</div><div class="stat-label">ACTIVE</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-revoked">—</div><div class="stat-label">REVOKED</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-absent">—</div><div class="stat-label">ABSENT</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-a">—</div><div class="stat-label">GROUP A</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-b">—</div><div class="stat-label">GROUP B</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-c">—</div><div class="stat-label">GROUP C</div></div>
+  </div>
+
+  <div class="controls">
+    <label style="color:var(--dim);font-size:0.72rem;letter-spacing:1px;">FILTER GROUP:</label>
+    <select class="group-filter" id="group-filter">
+      <option value="ALL">ALL</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+    </select>
+    <button class="btn green" id="btn-refresh">↺ REFRESH NOW</button>
+    <button class="btn amber" id="btn-csv">⬇ EXPORT CSV</button>
+    <button class="btn" id="btn-absentees">⬡ TOGGLE ABSENTEES</button>
+  </div>
+
+  <div id="loader">LOADING REGISTRATIONS...</div>
+
+  <div class="table-wrap" id="table-wrap" style="display:none;">
+    <table id="reg-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>REG ID</th>
+          <th>NAME</th>
+          <th>ALIAS</th>
+          <th>EMAIL</th>
+          <th>AFFILIATION</th>
+          <th>GROUP</th>
+          <th>REGISTERED AT</th>
+          <th>STATUS</th>
+          <th>ACCESS</th>
+        </tr>
+      </thead>
+      <tbody id="reg-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="absentees-section" style="display:none;">
+    <h2>⬡ ABSENTEES (NOT YET REGISTERED)</h2>
+    <ul class="absentee-list" id="absentee-list"></ul>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+
+<script>
+'use strict';
+
+// ── Whitelist (must mirror js/app.js _WHITELIST) ──────────────────────────────
+const WHITELIST = {
+  'au-bscs-f21-001': { name: 'Hamid Rafique',        group: 'A' },
+  'au-bscs-f21-002': { name: 'Ahmed Ali',             group: 'A' },
+  'au-bscs-f21-003': { name: 'Usman Khan',            group: 'A' },
+  'au-bscs-f21-004': { name: 'Bilal Hassan',          group: 'A' },
+  'au-bscs-f21-005': { name: 'Faisal Mahmood',        group: 'A' },
+  'au-bscs-f21-006': { name: 'Saad Iqbal',            group: 'A' },
+  'au-bscs-f21-007': { name: 'Zain Ul Abidin',        group: 'A' },
+  'au-bscs-f21-008': { name: 'Omar Farooq',           group: 'A' },
+  'au-bscs-f21-009': { name: 'Talha Mehmood',         group: 'A' },
+  'au-bscs-f21-010': { name: 'Shahzaib Ahmed',        group: 'A' },
+  'au-bscs-f21-011': { name: 'Asad Raza',             group: 'A' },
+  'au-bscs-f21-012': { name: 'Haris Nawaz',           group: 'A' },
+  'au-bscs-f21-013': { name: 'Muneeb Ur Rahman',      group: 'A' },
+  'au-bscs-f21-014': { name: 'Danyal Sheikh',         group: 'A' },
+  'au-bscs-f21-015': { name: 'Hamza Tariq',           group: 'A' },
+  'au-bscs-f21-016': { name: 'Aqib Javed',            group: 'A' },
+  'au-bscs-f21-017': { name: 'Waqar Hussain',         group: 'A' },
+  'au-bscs-f21-018': { name: 'Nasir Mahmood',         group: 'A' },
+  'au-bscs-f21-019': { name: 'Farhan Aziz',           group: 'A' },
+  'au-bscs-f21-020': { name: 'Taimoor Baig',          group: 'A' },
+  'au-bscs-f21-021': { name: 'Kamran Siddiqui',       group: 'B' },
+  'au-bscs-f21-022': { name: 'Irfan Ullah',           group: 'B' },
+  'au-bscs-f21-023': { name: 'Sohaib Anwar',          group: 'B' },
+  'au-bscs-f21-024': { name: 'Junaid Khalid',         group: 'B' },
+  'au-bscs-f21-025': { name: 'Rizwan Ghafoor',        group: 'B' },
+  'au-bscs-f21-026': { name: 'Adeel Bukhari',         group: 'B' },
+  'au-bscs-f21-027': { name: 'Salman Niaz',           group: 'B' },
+  'au-bscs-f21-028': { name: 'Imran Chaudhry',        group: 'B' },
+  'au-bscs-f21-029': { name: 'Qasim Rauf',            group: 'B' },
+  'au-bscs-f21-030': { name: 'Naveed Akhtar',         group: 'B' },
+  'au-bscs-f21-031': { name: 'Rehan Babar',           group: 'B' },
+  'au-bscs-f21-032': { name: 'Shahid Pervaiz',        group: 'B' },
+  'au-bscs-f21-033': { name: 'Waseem Akram',          group: 'B' },
+  'au-bscs-f21-034': { name: 'Noman Aslam',           group: 'B' },
+  'au-bscs-f21-035': { name: 'Yasir Latif',           group: 'B' },
+  'au-bscs-f21-036': { name: 'Zubair Qadir',          group: 'B' },
+  'au-bscs-f21-037': { name: 'Fahad Mirza',           group: 'B' },
+  'au-bscs-f21-038': { name: 'Awais Hafeez',          group: 'B' },
+  'au-bscs-f21-039': { name: 'Naeem Sadiq',           group: 'B' },
+  'au-bscs-f21-040': { name: 'Khurram Shehzad',       group: 'B' },
+  'au-bscs-f21-041': { name: 'Tariq Nawaz',           group: 'C' },
+  'au-bscs-f21-042': { name: 'Abrar Hussain',         group: 'C' },
+  'au-bscs-f21-043': { name: 'Javed Iqbal',           group: 'C' },
+  'au-bscs-f21-044': { name: 'Shehryar Malik',        group: 'C' },
+  'au-bscs-f21-045': { name: 'Zahid Mehmood',         group: 'C' },
+  'au-bscs-f21-046': { name: 'Raza Ul Haq',           group: 'C' },
+  'au-bscs-f21-047': { name: 'Babar Azam',            group: 'C' },
+  'au-bscs-f21-048': { name: 'Shahbaz Gill',          group: 'C' },
+  'au-bscs-f21-049': { name: 'Mohsin Naqvi',          group: 'C' },
+  'au-bscs-f21-050': { name: 'Arshad Waheed',         group: 'C' },
+  'au-bscs-f21-051': { name: 'Farrukh Tashkentov',    group: 'C' },
+  'au-bscs-f21-052': { name: 'Ghulam Mustafa',        group: 'C' },
+  'au-bscs-f21-053': { name: 'Habib Ur Rahman',       group: 'C' },
+  'au-bscs-f21-054': { name: 'Imtiaz Ahmad',          group: 'C' },
+  'au-bscs-f21-055': { name: 'Khalid Mehmood',        group: 'C' },
+  'au-bscs-f21-056': { name: 'Liaquat Ali',           group: 'C' },
+  'au-bscs-f21-057': { name: 'Muzammil Hussain',      group: 'C' },
+  'au-bscs-f21-058': { name: 'Naseem Akhtar',         group: 'C' },
+  'au-bscs-f21-059': { name: 'Pervaiz Bashir',        group: 'C' },
+  'au-bscs-f21-060': { name: 'Qaiser Mahmood',        group: 'C' }
+};
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+const ADMIN_USER = '0xPh4nt0m';
+const ADMIN_PASS = 'Ph4nt0m@AU2025';
+const SESSION_KEY = '__phantom_admin_session';
+const SESSION_VALUE = 'authenticated';
+
+let db = null;
+let _allRegs = {};
+let _refreshTimer = null;
+let _refreshCountdown = 30;
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = String(s || '');
+  return d.innerHTML;
+}
+
+function formatTs(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  try {
+    return d.toLocaleString('en-PK', { timeZone: 'Asia/Karachi' });
+  } catch (_) {
+    return d.toLocaleString('en-GB');
+  }
+}
+
+function generateSessionId() {
+  return 'ADM-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
+// ── Login logic ───────────────────────────────────────────────────────────────
+document.getElementById('adm-login-btn').addEventListener('click', doLogin);
+document.getElementById('adm-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogin() {
+  const u = document.getElementById('adm-user').value.trim();
+  const p = document.getElementById('adm-pass').value;
+  const errEl = document.getElementById('login-error');
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    const sid = generateSessionId();
+    sessionStorage.setItem(SESSION_KEY, SESSION_VALUE);
+    sessionStorage.setItem(SESSION_KEY + '_id', sid);
+    errEl.style.display = 'none';
+    showDashboard(sid);
+  } else {
+    errEl.style.display = 'block';
+    document.getElementById('adm-pass').value = '';
+  }
+}
+
+function checkSession() {
+  if (sessionStorage.getItem(SESSION_KEY) === SESSION_VALUE) {
+    const sid = sessionStorage.getItem(SESSION_KEY + '_id') || generateSessionId();
+    showDashboard(sid);
+    return true;
+  }
+  return false;
+}
+
+document.getElementById('adm-logout-btn').addEventListener('click', () => {
+  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(SESSION_KEY + '_id');
+  clearInterval(_refreshTimer);
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+});
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+function showDashboard(sid) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('adm-session-id').textContent = sid;
+
+  // Init Firebase
+  if (typeof firebase !== 'undefined' && FIREBASE_ENABLED) {
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      db = firebase.database();
+    } catch (e) {
+      console.warn('Firebase init failed:', e.message);
+    }
+  }
+
+  loadRegistrations();
+  startAutoRefresh();
+}
+
+function startAutoRefresh() {
+  clearInterval(_refreshTimer);
+  _refreshCountdown = 30;
+  updateRefreshBar();
+  _refreshTimer = setInterval(() => {
+    _refreshCountdown--;
+    updateRefreshBar();
+    if (_refreshCountdown <= 0) {
+      loadRegistrations();
+      _refreshCountdown = 30;
+    }
+  }, 1000);
+}
+
+function updateRefreshBar() {
+  document.getElementById('refresh-bar').textContent = _refreshCountdown + 's';
+}
+
+document.getElementById('btn-refresh').addEventListener('click', () => {
+  loadRegistrations();
+  _refreshCountdown = 30;
+});
+
+// ── Load Registrations ────────────────────────────────────────────────────────
+async function loadRegistrations() {
+  document.getElementById('loader').style.display = 'block';
+  document.getElementById('table-wrap').style.display = 'none';
+
+  if (!db) {
+    document.getElementById('loader').textContent = 'Firebase not connected — no data.';
+    return;
+  }
+
+  try {
+    const snap = await db.ref('registrations').once('value');
+    _allRegs = snap.val() || {};
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('table-wrap').style.display = 'block';
+    renderTable();
+    renderStats();
+    renderAbsentees();
+  } catch (e) {
+    document.getElementById('loader').textContent = 'Error loading: ' + e.message;
+  }
+}
+
+// ── Render Table ──────────────────────────────────────────────────────────────
+function renderTable() {
+  const groupFilter = document.getElementById('group-filter').value;
+  const tbody = document.getElementById('reg-tbody');
+  tbody.innerHTML = '';
+
+  let idx = 0;
+  for (const [regId, data] of Object.entries(_allRegs)) {
+    const group = data.group || (WHITELIST[regId] ? WHITELIST[regId].group : '?');
+    if (groupFilter !== 'ALL' && group !== groupFilter) continue;
+
+    idx++;
+    const isRevoked = data.revoked === true;
+    const statusBadge = isRevoked
+      ? '<span class="badge-revoked">REVOKED</span>'
+      : '<span class="badge-active">ACTIVE</span>';
+
+    const tr = document.createElement('tr');
+    tr.dataset.regId = regId;
+    tr.innerHTML = `
+      <td>${idx}</td>
+      <td>${escHtml(regId)}</td>
+      <td>${escHtml(data.name || data.fullName || '—')}</td>
+      <td>${escHtml(data.alias || '—')}</td>
+      <td>${escHtml(data.email || '—')}</td>
+      <td>${escHtml(data.affiliation || '—')}</td>
+      <td><span class="badge-group">${escHtml(group)}</span></td>
+      <td>${formatTs(data.registeredAt)}</td>
+      <td>${statusBadge}</td>
+      <td class="access-cell">
+        <button class="btn red btn-revoke" data-id="${escHtml(regId)}" ${isRevoked ? 'disabled' : ''}>REVOKE</button>
+        <button class="btn amber btn-unlock" data-id="${escHtml(regId)}">UNLOCK</button>
+        <div class="unlock-note" id="unlock-note-${escHtml(regId)}">
+          (remind student to clear browser cache before re-attempting)
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  if (idx === 0) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--dim);padding:30px;">NO REGISTRATIONS FOUND</td></tr>';
+  }
+
+  // Attach action handlers
+  tbody.querySelectorAll('.btn-revoke').forEach(btn => {
+    btn.addEventListener('click', () => revokeUser(btn.dataset.id, btn));
+  });
+  tbody.querySelectorAll('.btn-unlock').forEach(btn => {
+    btn.addEventListener('click', () => unlockUser(btn.dataset.id, btn));
+  });
+}
+
+// ── REVOKE ────────────────────────────────────────────────────────────────────
+async function revokeUser(regId, btn) {
+  if (!db) return;
+  if (!confirm(`Revoke access for ${regId}?`)) return;
+  try {
+    await db.ref(`registrations/${regId}/revoked`).set(true);
+    await loadRegistrations();
+  } catch (e) {
+    alert('Error revoking: ' + e.message);
+  }
+}
+
+// ── UNLOCK (delete entire record) ─────────────────────────────────────────────
+async function unlockUser(regId, btn) {
+  if (!db) return;
+  if (!confirm(`Delete registration for ${regId}? The student will be able to re-register.`)) return;
+  try {
+    await db.ref(`registrations/${regId}`).remove();
+    // Show cache reminder next to the button before re-render
+    const noteEl = document.getElementById(`unlock-note-${regId}`);
+    if (noteEl) noteEl.style.display = 'block';
+    setTimeout(() => loadRegistrations(), 1500);
+  } catch (e) {
+    alert('Error unlocking: ' + e.message);
+  }
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+function renderStats() {
+  const regs = Object.entries(_allRegs);
+  const total = regs.length;
+  const revoked = regs.filter(([, d]) => d.revoked === true).length;
+  const active = total - revoked;
+  const absent = Object.keys(WHITELIST).length - total;
+  const groupCount = { A: 0, B: 0, C: 0 };
+  regs.forEach(([id, d]) => {
+    const g = d.group || (WHITELIST[id] ? WHITELIST[id].group : null);
+    if (g && groupCount[g] !== undefined) groupCount[g]++;
+  });
+
+  document.getElementById('stat-total').textContent   = total;
+  document.getElementById('stat-active').textContent  = active;
+  document.getElementById('stat-revoked').textContent = revoked;
+  document.getElementById('stat-absent').textContent  = absent >= 0 ? absent : '?';
+  document.getElementById('stat-a').textContent = groupCount.A;
+  document.getElementById('stat-b').textContent = groupCount.B;
+  document.getElementById('stat-c').textContent = groupCount.C;
+}
+
+// ── Absentees ─────────────────────────────────────────────────────────────────
+function renderAbsentees() {
+  const registeredIds = new Set(Object.keys(_allRegs));
+  const absent = Object.entries(WHITELIST).filter(([id]) => !registeredIds.has(id));
+  const list = document.getElementById('absentee-list');
+  list.innerHTML = '';
+  if (absent.length === 0) {
+    list.innerHTML = '<li style="color:var(--green)">All whitelisted students have registered.</li>';
+    return;
+  }
+  absent.forEach(([id, info]) => {
+    const li = document.createElement('li');
+    li.textContent = `${info.name} (${id}) — Group ${info.group}`;
+    list.appendChild(li);
+  });
+}
+
+document.getElementById('btn-absentees').addEventListener('click', () => {
+  const sec = document.getElementById('absentees-section');
+  sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+});
+
+// ── Group Filter ──────────────────────────────────────────────────────────────
+document.getElementById('group-filter').addEventListener('change', renderTable);
+
+// ── CSV Export ────────────────────────────────────────────────────────────────
+document.getElementById('btn-csv').addEventListener('click', exportCSV);
+
+function exportCSV() {
+  const headers = ['RegID', 'Name', 'Alias', 'Email', 'Affiliation', 'Group', 'RegisteredAt', 'Status'];
+  const rows = [headers.join(',')];
+
+  for (const [regId, data] of Object.entries(_allRegs)) {
+    const group = data.group || (WHITELIST[regId] ? WHITELIST[regId].group : '?');
+    const row = [
+      regId,
+      data.name || data.fullName || '',
+      data.alias || '',
+      data.email || '',
+      data.affiliation || '',
+      group,
+      data.registeredAt ? new Date(data.registeredAt).toISOString() : '',
+      data.revoked ? 'REVOKED' : 'ACTIVE'
+    ].map(v => `"${String(v).replace(/"/g, '""')}"`);
+    rows.push(row.join(','));
+  }
+
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `phantom-registrations-${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+checkSession();
+</script>
+</body>
+</html>

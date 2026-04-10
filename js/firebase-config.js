@@ -7,3 +7,7 @@ const firebaseConfig = {
   messagingSenderId: "759417369541",
   appId: "1:759417369541:web:2c53c8c50d47792d2011ac"
 };
+
+// Option A — expose globals expected by scoreboard.js
+const FIREBASE_ENABLED = true;
+const FIREBASE_CONFIG = firebaseConfig;
