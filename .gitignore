@@ -1,0 +1,23 @@
+# Private files — never deploy
+SOLUTION.md
+build/
+build_info.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if any dev tools used)
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A fractured signal bleeds through a dying network. Intercept the phantom's transmission. Solve the layers. Reconstruct the signal.">
+    <meta name="theme-color" content="#050508">
+    <meta name="robots" content="noindex, nofollow">
+    <title>0xPh4nt0m — Fractured Signal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👻</text></svg>">
+</head>
+<body>
+    <!-- Signal visualization canvas -->
+    <canvas id="signal-canvas"></canvas>
+
+    <!-- ═══ REGISTRATION OVERLAY ═══ -->
+    <div class="registration-overlay" id="registration-overlay">
+        <div class="reg-container">
+            <div class="reg-panel">
+                <div class="reg-header">
+                    <h2>Access Terminal</h2>
+                    <div class="reg-subtitle">SIGNAL ENTITY 0xPh4nt0m — OPERATIVE REGISTRATION</div>
+                </div>
+                <div class="reg-body">
+                    <div class="reg-warning">
+                        ⚠ THIS TERMINAL SESSION IS ONE-TIME ONLY ⚠<br>
+                        Once initiated, your signal intercept cannot be restarted.<br>
+                        You have 60 minutes. Choose your identity carefully.
+                    </div>
+                    <form id="reg-form">
+                        <div class="reg-field">
+                            <label for="reg-alias">&gt;&gt; Operative Alias</label>
+                            <input type="text" id="reg-alias" placeholder="your_handle" 
+                                   required minlength="2" maxlength="24" autocomplete="off" spellcheck="false">
+                        </div>
+                        <div class="reg-field">
+                            <label for="reg-fullname">&gt;&gt; Full Name</label>
+                            <input type="text" id="reg-fullname" placeholder="your full name" 
+                                   required minlength="2" maxlength="64" autocomplete="off">
+                        </div>
+                        <div class="reg-field">
+                            <label for="reg-affiliation">&gt;&gt; Affiliation</label>
+                            <input type="text" id="reg-affiliation" placeholder="team, org, or university" 
+                                   required minlength="2" maxlength="64" autocomplete="off">
+                        </div>
+                        <button type="submit" class="reg-submit-btn" id="reg-submit">
+                            INITIATE SIGNAL INTERCEPT
+                        </button>
+                    </form>
+                    <div class="reg-error" id="reg-error"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div class="game-over-overlay" id="game-over-overlay">
+        <div class="game-over-text" data-text="SIGNAL LOST">SIGNAL LOST</div>
+        <div class="game-over-sub">THE PHANTOM'S TRANSMISSION HAS DECAYED BEYOND RECOVERY</div>
+        <div class="game-over-sub" style="margin-top: 10px; color: rgba(255, 0, 64, 0.4);">
+            TIME EXPIRED — CHALLENGE LOCKED
+        </div>
+    </div>
+
+    <!-- ════════ HIDDEN SIGNAL ELEMENTS — NOISE FIELD ════════ -->
+    <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;">
+        <div class="substrate-noise-field" data-field="alpha">
+<span class="Ω" data-ω="32" data-Δ="fc"></span>
+<span class="θ" data-ω="15" data-Δ="c3"></span>
+<span class="ε" data-ω="1" data-Δ="9f"></span>
+<span class="μ" data-ω="6" data-Δ="33"></span>
+<span class="χ" data-ω="0" data-Δ="b7"></span>
+<span class="χ" data-ω="12" data-Δ="43"></span>
+<span class="π" data-ω="16" data-Δ="05"></span>
+<span class="σ" data-ω="4" data-Δ="2e"></span>
+<span class="θ" data-ω="37" data-Δ="7c"></span>
+<span class="ε" data-ω="24" data-Δ="f4"></span>
+<span class="σ" data-ω="14" data-Δ="66"></span>
+<span class="ψ" data-ω="7" data-Δ="6e"></span>
+<span class="θ" data-ω="15" data-Δ="73"></span>
+<span class="σ" data-ω="40" data-Δ="ba"></span>
+<span class="σ" data-ω="35" data-Δ="7b"></span>
+<span class="σ" data-ω="28" data-Δ="ae"></span>
+<span class="μ" data-ω="42" data-Δ="c2"></span>
+<span class="ξ" data-ω="32" data-Δ="0d"></span>
+<span class="ε" data-ω="37" data-Δ="fa"></span>
+<span class="σ" data-ω="46" data-Δ="1b"></span>
+<span class="Ω" data-ω="50" data-Δ="65"></span>
+<span class="σ" data-ω="23" data-Δ="86"></span>
+<span class="χ" data-ω="5" data-Δ="97"></span>
+<span class="ε" data-ω="14" data-Δ="20"></span>
+<span class="ξ" data-ω="22" data-Δ="84"></span>
+<span class="σ" data-ω="36" data-Δ="c2"></span>
+<span class="θ" data-ω="45" data-Δ="1e"></span>
+<span class="ε" data-ω="35" data-Δ="a8"></span>
+<span class="χ" data-ω="28" data-Δ="f7"></span>
+<span class="θ" data-ω="38" data-Δ="de"></span>
+<span class="Ω" data-ω="5" data-Δ="77"></span>
+<span class="ψ" data-ω="3" data-Δ="3e"></span>
+<span class="Ω" data-ω="28" data-Δ="7c"></span>
+<span class="λ" data-ω="20" data-Δ="29"></span>
+<span class="ξ" data-ω="12" data-Δ="0a"></span>
+<span class="ξ" data-ω="34" data-Δ="45"></span>
+<span class="χ" data-ω="27" data-Δ="5d"></span>
+<span class="λ" data-ω="27" data-Δ="4a"></span>
+<span class="π" data-ω="12" data-Δ="d6"></span>
+<span class="μ" data-ω="17" data-Δ="21"></span>
+<span class="ξ" data-ω="2" data-Δ="a1"></span>
+<span class="σ" data-ω="34" data-Δ="9a"></span>
+<span class="λ" data-ω="50" data-Δ="d2"></span>
+<span class="ε" data-ω="35" data-Δ="4b"></span>
+<span class="θ" data-ω="12" data-Δ="97"></span>
+<span class="Ω" data-ω="36" data-Δ="14"></span>
+<span class="μ" data-ω="46" data-Δ="1a"></span>
+<span class="π" data-ω="19" data-Δ="35"></span>
+<span class="φ" data-ω="2" data-Δ="a6"></span>
+<span class="ε" data-ω="30" data-Δ="50"></span>
+<span class="φ" data-ω="37" data-Δ="ba"></span>
+<span class="σ" data-ω="7" data-Δ="31"></span>
+<span class="ψ" data-ω="5" data-Δ="39"></span>
+<span class="π" data-ω="45" data-Δ="da"></span>
+<span class="ξ" data-ω="34" data-Δ="66"></span>
+<span class="θ" data-ω="47" data-Δ="6e"></span>
+<span class="ξ" data-ω="7" data-Δ="62"></span>
+<span class="ξ" data-ω="36" data-Δ="c4"></span>
+<span class="λ" data-ω="4" data-Δ="79"></span>
+<span class="θ" data-ω="15" data-Δ="3c"></span>
+<span class="φ" data-ω="14" data-Δ="93"></span>
+<span class="λ" data-ω="47" data-Δ="d4"></span>
+<span class="λ" data-ω="15" data-Δ="2c"></span>
+<span class="θ" data-ω="30" data-Δ="87"></span>
+<span class="σ" data-ω="27" data-Δ="89"></span>
+<span class="φ" data-ω="5" data-Δ="6f"></span>
+<span class="μ" data-ω="21" data-Δ="e8"></span>
+<span class="π" data-ω="2" data-Δ="23"></span>
+<span class="ξ" data-ω="16" data-Δ="ca"></span>
+<span class="θ" data-ω="49" data-Δ="d9"></span>
+<span class="π" data-ω="26" data-Δ="4f"></span>
+<span class="θ" data-ω="46" data-Δ="f8"></span>
+<span class="ε" data-ω="24" data-Δ="be"></span>
+<span class="ε" data-ω="1" data-Δ="19"></span>
+<span class="ψ" data-ω="16" data-Δ="2b"></span>
+<span class="φ" data-ω="25" data-Δ="8d"></span>
+<span class="Ω" data-ω="23" data-Δ="14"></span>
+<span class="χ" data-ω="9" data-Δ="9b"></span>
+<span class="π" data-ω="31" data-Δ="7a"></span>
+<span class="ε" data-ω="34" data-Δ="0d"></span>
+<span class="ξ" data-ω="41" data-Δ="ff"></span>
+<span class="χ" data-ω="23" data-Δ="b5"></span>
+<span class="ε" data-ω="23" data-Δ="62"></span>
+<span class="λ" data-ω="18" data-Δ="50"></span>
+<span class="Ω" data-ω="46" data-Δ="a6"></span>
+<span class="Ω" data-ω="49" data-Δ="bc"></span>
+<span class="λ" data-ω="3" data-Δ="19"></span>
+<span class="μ" data-ω="7" data-Δ="91"></span>
+<span class="ξ" data-ω="47" data-Δ="2e"></span>
+<span class="π" data-ω="28" data-Δ="51"></span>
+<span class="π" data-ω="18" data-Δ="40"></span>
+<span class="λ" data-ω="40" data-Δ="f9"></span>
+<span class="μ" data-ω="31" data-Δ="0e"></span>
+<span class="λ" data-ω="14" data-Δ="23"></span>
+<span class="π" data-ω="23" data-Δ="8b"></span>
+<span class="χ" data-ω="16" data-Δ="f6"></span>
+<span class="ξ" data-ω="23" data-Δ="32"></span>
+<span class="ε" data-ω="19" data-Δ="d9"></span>
+<span class="λ" data-ω="27" data-Δ="d2"></span>
+<span class="μ" data-ω="50" data-Δ="a4"></span>
+<span class="μ" data-ω="21" data-Δ="8e"></span>
+<span class="φ" data-ω="11" data-Δ="49"></span>
+<span class="μ" data-ω="31" data-Δ="cc"></span>
+<span class="χ" data-ω="3" data-Δ="81"></span>
+<span class="χ" data-ω="29" data-Δ="c2"></span>
+        </div>
+    </div>
+
+    <div class="phantom-container">
+        <!-- Header -->
+        <header class="phantom-header" id="phantom-header">
+            <div class="header-title">
+                <span class="phantom-name glitch-text" data-text="0xPh4nt0m">0xPh4nt0m</span>
+                <span style="color: var(--text-dim);"> SIGNAL FEED</span>
+            </div>
+            <span class="user-alias" id="user-alias-display"></span>
+            <div class="timer-display" id="timer-display">01:00:00</div>
+            <!-- substrate fragments -->
+            <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">
+<span class="ψ" data-ω="14" data-Δ="28"></span>
+<span class="φ" data-ω="14" data-Δ="ca"></span>
+<span class="ψ" data-ω="2" data-Δ="6e"></span>
+<span class="σ" data-ω="5" data-Δ="f0"></span>
+<span class="Ω" data-ω="29" data-Δ="7f"></span>
+<span class="ε" data-ω="20" data-Δ="fa"></span>
+<span class="Ω" data-ω="25" data-Δ="bf"></span>
+<span class="σ" data-ω="50" data-Δ="08"></span>
+<span class="ε" data-ω="47" data-Δ="fe"></span>
+<span class="ξ" data-ω="34" data-Δ="43"></span>
+<span class="ξ" data-ω="7" data-Δ="e8"></span>
+<span class="Ω" data-ω="42" data-Δ="f8"></span>
+<span class="θ" data-ω="1" data-Δ="7a"></span>
+<span class="χ" data-ω="11" data-Δ="28"></span>
+<span class="π" data-ω="8" data-Δ="62"></span>
+<span class="π" data-ω="38" data-Δ="d8"></span>
+<span class="π" data-ω="38" data-Δ="65"></span>
+<span class="ψ" data-ω="1" data-Δ="69"></span>
+<span class="λ" data-ω="39" data-Δ="cb"></span>
+<span class="π" data-ω="19" data-Δ="d1"></span>
+<span class="φ" data-ω="26" data-Δ="e6"></span>
+<span class="θ" data-ω="25" data-Δ="15"></span>
+<span class="σ" data-ω="28" data-Δ="b9"></span>
+<span class="π" data-ω="29" data-Δ="07"></span>
+<span class="χ" data-ω="8" data-Δ="c2"></span>
+<span class="λ" data-ω="7" data-Δ="96"></span>
+<span class="λ" data-ω="17" data-Δ="8d"></span>
+<span class="θ" data-ω="43" data-Δ="77"></span>
+<span class="χ" data-ω="26" data-Δ="f8"></span>
+<span class="Ω" data-ω="18" data-Δ="6b"></span>
+<span class="λ" data-ω="41" data-Δ="cc"></span>
+<span class="ε" data-ω="5" data-Δ="d6"></span>
+<span class="χ" data-ω="23" data-Δ="52"></span>
+<span class="σ" data-ω="32" data-Δ="71"></span>
+<span class="λ" data-ω="7" data-Δ="5e"></span>
+<span class="θ" data-ω="43" data-Δ="2c"></span>
+<span class="Ω" data-ω="2" data-Δ="01"></span>
+<span class="λ" data-ω="1" data-Δ="fd"></span>
+<span class="μ" data-ω="29" data-Δ="bd"></span>
+<span class="σ" data-ω="38" data-Δ="e2"></span>
+<span class="ε" data-ω="35" data-Δ="75"></span>
+<span class="π" data-ω="31" data-Δ="2e"></span>
+<span class="ξ" data-ω="40" data-Δ="93"></span>
+<span class="σ" data-ω="2" data-Δ="40"></span>
+<span class="σ" data-ω="18" data-Δ="cd"></span>
+<span class="μ" data-ω="1" data-Δ="eb"></span>
+<span class="μ" data-ω="21" data-Δ="ee"></span>
+<span class="θ" data-ω="28" data-Δ="32"></span>
+<span class="ξ" data-ω="33" data-Δ="d2"></span>
+<span class="σ" data-ω="45" data-Δ="4e"></span>
+<span class="λ" data-ω="27" data-Δ="23"></span>
+<span class="χ" data-ω="19" data-Δ="07"></span>
+<span class="χ" data-ω="26" data-Δ="4f"></span>
+<span class="λ" data-ω="49" data-Δ="42"></span>
+<span class="λ" data-ω="7" data-Δ="ce"></span>
+<span class="θ" data-ω="28" data-Δ="33"></span>
+<span class="μ" data-ω="35" data-Δ="00"></span>
+<span class="μ" data-ω="43" data-Δ="37"></span>
+<span class="θ" data-ω="17" data-Δ="d4"></span>
+<span class="λ" data-ω="21" data-Δ="c1"></span>
+<span class="θ" data-ω="5" data-Δ="c2"></span>
+<span class="φ" data-ω="7" data-Δ="4e"></span>
+<span class="λ" data-ω="49" data-Δ="1c"></span>
+<span class="ψ" data-ω="9" data-Δ="34"></span>
+<span class="ε" data-ω="38" data-Δ="2b"></span>
+<span class="χ" data-ω="29" data-Δ="41"></span>
+<span class="σ" data-ω="45" data-Δ="95"></span>
+<span class="σ" data-ω="48" data-Δ="1a"></span>
+<span class="χ" data-ω="30" data-Δ="e2"></span>
+<span class="μ" data-ω="45" data-Δ="65"></span>
+<span class="χ" data-ω="17" data-Δ="48"></span>
+<span class="φ" data-ω="11" data-Δ="8b"></span>
+<span class="ψ" data-ω="4" data-Δ="05"></span>
+<span class="σ" data-ω="10" data-Δ="99"></span>
+<span class="θ" data-ω="48" data-Δ="40"></span>
+<span class="μ" data-ω="26" data-Δ="30"></span>
+<span class="ψ" data-ω="0" data-Δ="3e"></span>
+<span class="ε" data-ω="18" data-Δ="f0"></span>
+<span class="θ" data-ω="21" data-Δ="c2"></span>
+<span class="ψ" data-ω="15" data-Δ="69"></span>
+<span class="χ" data-ω="48" data-Δ="82"></span>
+<span class="Ω" data-ω="14" data-Δ="65"></span>
+<span class="π" data-ω="13" data-Δ="6e"></span>
+<span class="φ" data-ω="18" data-Δ="98"></span>
+<span class="ψ" data-ω="19" data-Δ="6d"></span>
+<span class="θ" data-ω="47" data-Δ="be"></span>
+<span class="Ω" data-ω="21" data-Δ="b3"></span>
+<span class="λ" data-ω="15" data-Δ="40"></span>
+<span class="φ" data-ω="11" data-Δ="87"></span>
+<span class="χ" data-ω="35" data-Δ="1e"></span>
+<span class="ψ" data-ω="13" data-Δ="3c"></span>
+<span class="σ" data-ω="7" data-Δ="ef"></span>
+<span class="ξ" data-ω="25" data-Δ="a8"></span>
+<span class="ξ" data-ω="32" data-Δ="f2"></span>
+<span class="ε" data-ω="42" data-Δ="88"></span>
+<span class="ξ" data-ω="42" data-Δ="88"></span>
+<span class="π" data-ω="7" data-Δ="20"></span>
+<span class="π" data-ω="48" data-Δ="5b"></span>
+<span class="μ" data-ω="38" data-Δ="96"></span>
+<span class="π" data-ω="4" data-Δ="50"></span>
+<span class="φ" data-ω="35" data-Δ="7f"></span>
+<span class="Ω" data-ω="28" data-Δ="f8"></span>
+<span class="σ" data-ω="39" data-Δ="da"></span>
+<span class="χ" data-ω="50" data-Δ="d8"></span>
+<span class="Ω" data-ω="36" data-Δ="1e"></span>
+            </div>
+        </header>
+
+        <!-- Layer Progress -->
+        <div class="layer-progress" id="layer-progress">
+            <span class="label">LAYER</span>
+            <div class="progress-dots">
+                <div class="progress-dot active" id="progress-dot-1"></div>
+                <div class="progress-dot" id="progress-dot-2"></div>
+                <div class="progress-dot" id="progress-dot-3"></div>
+                <div class="progress-dot" id="progress-dot-4"></div>
+            </div>
+            <span class="layer-name" id="current-layer-name">THE BLEEDING FREQUENCY</span>
+        </div>
+
+        <!-- Signal Integrity Bar -->
+        <div class="signal-bar">
+            <span class="label">Signal Integrity</span>
+            <div class="signal-meter">
+                <div class="signal-meter-fill" id="signal-fill" style="width: 0%"></div>
+            </div>
+            <span class="signal-percentage" id="signal-pct">0%</span>
+            <!-- deeper substrate -->
+            <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">
+<span class="θ" data-ω="42" data-Δ="6c"></span>
+<span class="σ" data-ω="28" data-Δ="84"></span>
+<span class="θ" data-ω="5" data-Δ="a4"></span>
+<span class="φ" data-ω="30" data-Δ="cd"></span>
+<span class="φ" data-ω="47" data-Δ="1a"></span>
+<span class="φ" data-ω="16" data-Δ="3f"></span>
+<span class="Ω" data-ω="28" data-Δ="27"></span>
+<span class="θ" data-ω="41" data-Δ="4e"></span>
+<span class="ε" data-ω="22" data-Δ="97"></span>
+<span class="μ" data-ω="35" data-Δ="bb"></span>
+<span class="ε" data-ω="36" data-Δ="f2"></span>
+<span class="χ" data-ω="4" data-Δ="22"></span>
+<span class="Ω" data-ω="4" data-Δ="8e"></span>
+<span class="σ" data-ω="45" data-Δ="e3"></span>
+<span class="π" data-ω="10" data-Δ="87"></span>
+<span class="ξ" data-ω="13" data-Δ="f7"></span>
+<span class="π" data-ω="32" data-Δ="63"></span>
+<span class="μ" data-ω="11" data-Δ="8a"></span>
+<span class="χ" data-ω="7" data-Δ="0d"></span>
+<span class="μ" data-ω="38" data-Δ="ef"></span>
+<span class="Ω" data-ω="15" data-Δ="1d"></span>
+<span class="π" data-ω="46" data-Δ="6e"></span>
+<span class="σ" data-ω="19" data-Δ="db"></span>
+<span class="ξ" data-ω="17" data-Δ="51"></span>
+<span class="σ" data-ω="26" data-Δ="63"></span>
+<span class="σ" data-ω="22" data-Δ="9c"></span>
+<span class="Ω" data-ω="28" data-Δ="d9"></span>
+<span class="π" data-ω="0" data-Δ="61"></span>
+<span class="λ" data-ω="13" data-Δ="e8"></span>
+<span class="ξ" data-ω="17" data-Δ="43"></span>
+<span class="π" data-ω="31" data-Δ="80"></span>
+<span class="ψ" data-ω="11" data-Δ="36"></span>
+<span class="ξ" data-ω="3" data-Δ="1f"></span>
+<span class="χ" data-ω="21" data-Δ="d2"></span>
+<span class="Ω" data-ω="19" data-Δ="80"></span>
+<span class="ε" data-ω="41" data-Δ="04"></span>
+<span class="χ" data-ω="42" data-Δ="2b"></span>
+<span class="ξ" data-ω="11" data-Δ="ed"></span>
+<span class="θ" data-ω="43" data-Δ="88"></span>
+<span class="Ω" data-ω="44" data-Δ="ce"></span>
+<span class="λ" data-ω="46" data-Δ="a0"></span>
+<span class="θ" data-ω="43" data-Δ="77"></span>
+<span class="ξ" data-ω="23" data-Δ="5b"></span>
+<span class="π" data-ω="6" data-Δ="98"></span>
+<span class="σ" data-ω="20" data-Δ="25"></span>
+<span class="ξ" data-ω="40" data-Δ="6c"></span>
+<span class="μ" data-ω="1" data-Δ="5b"></span>
+<span class="ξ" data-ω="49" data-Δ="d2"></span>
+<span class="ε" data-ω="31" data-Δ="9d"></span>
+<span class="χ" data-ω="48" data-Δ="73"></span>
+<span class="π" data-ω="35" data-Δ="b5"></span>
+<span class="ψ" data-ω="17" data-Δ="05"></span>
+<span class="θ" data-ω="20" data-Δ="81"></span>
+<span class="φ" data-ω="2" data-Δ="9b"></span>
+<span class="ξ" data-ω="36" data-Δ="28"></span>
+<span class="μ" data-ω="41" data-Δ="ea"></span>
+<span class="π" data-ω="42" data-Δ="f9"></span>
+<span class="θ" data-ω="50" data-Δ="ca"></span>
+<span class="φ" data-ω="9" data-Δ="50"></span>
+<span class="ε" data-ω="30" data-Δ="95"></span>
+<span class="λ" data-ω="14" data-Δ="46"></span>
+<span class="λ" data-ω="13" data-Δ="7f"></span>
+<span class="σ" data-ω="33" data-Δ="e7"></span>
+<span class="θ" data-ω="24" data-Δ="8e"></span>
+<span class="ξ" data-ω="9" data-Δ="02"></span>
+<span class="Ω" data-ω="46" data-Δ="90"></span>
+<span class="μ" data-ω="24" data-Δ="4d"></span>
+<span class="ε" data-ω="43" data-Δ="c0"></span>
+<span class="ε" data-ω="22" data-Δ="70"></span>
+<span class="π" data-ω="2" data-Δ="e8"></span>
+<span class="φ" data-ω="46" data-Δ="86"></span>
+<span class="λ" data-ω="27" data-Δ="a0"></span>
+<span class="μ" data-ω="8" data-Δ="15"></span>
+<span class="μ" data-ω="3" data-Δ="60"></span>
+<span class="θ" data-ω="42" data-Δ="dc"></span>
+<span class="ψ" data-ω="18" data-Δ="6d"></span>
+<span class="θ" data-ω="38" data-Δ="57"></span>
+<span class="Ω" data-ω="32" data-Δ="ab"></span>
+<span class="Ω" data-ω="42" data-Δ="29"></span>
+<span class="θ" data-ω="9" data-Δ="0f"></span>
+<span class="χ" data-ω="19" data-Δ="37"></span>
+<span class="σ" data-ω="18" data-Δ="d8"></span>
+<span class="θ" data-ω="44" data-Δ="9a"></span>
+<span class="θ" data-ω="29" data-Δ="26"></span>
+<span class="λ" data-ω="6" data-Δ="7f"></span>
+<span class="ξ" data-ω="7" data-Δ="ec"></span>
+<span class="μ" data-ω="30" data-Δ="f1"></span>
+<span class="θ" data-ω="5" data-Δ="dd"></span>
+<span class="Ω" data-ω="38" data-Δ="93"></span>
+<span class="ψ" data-ω="20" data-Δ="69"></span>
+<span class="ξ" data-ω="4" data-Δ="10"></span>
+<span class="λ" data-ω="13" data-Δ="87"></span>
+<span class="φ" data-ω="7" data-Δ="b9"></span>
+<span class="θ" data-ω="21" data-Δ="0a"></span>
+<span class="π" data-ω="0" data-Δ="ec"></span>
+<span class="λ" data-ω="4" data-Δ="7d"></span>
+<span class="θ" data-ω="22" data-Δ="d0"></span>
+<span class="θ" data-ω="50" data-Δ="3a"></span>
+<span class="φ" data-ω="5" data-Δ="d8"></span>
+<span class="Ω" data-ω="10" data-Δ="e2"></span>
+<span class="χ" data-ω="16" data-Δ="3b"></span>
+<span class="ε" data-ω="40" data-Δ="1b"></span>
+<span class="ξ" data-ω="27" data-Δ="cd"></span>
+<span class="λ" data-ω="42" data-Δ="35"></span>
+            </div>
+        </div>
+
+        <!-- Layer Content (dynamically rendered) -->
+        <main id="layer-content">
+            <!-- Layer content injected by JS -->
+        </main>
+
+        <!-- Footer -->
+        <footer style="padding: 20px 0; text-align: center; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 2px; border-top: 1px solid var(--border-glow); margin-top: 30px;">
+            <div>SIGNAL INTERCEPT TERMINAL v0.7.3 — UNAUTHORIZED ACCESS DETECTED</div>
+            <div style="margin-top: 5px; color: rgba(0, 229, 255, 0.2);">
+                0xPh4nt0m has been watching since before the network died
+            </div>
+            <!-- substrate echo -->
+            <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">
+<span class="ξ" data-ω="37" data-Δ="a5"></span>
+<span class="χ" data-ω="13" data-Δ="ac"></span>
+<span class="λ" data-ω="44" data-Δ="e8"></span>
+<span class="Ω" data-ω="49" data-Δ="75"></span>
+<span class="ε" data-ω="29" data-Δ="b9"></span>
+<span class="μ" data-ω="7" data-Δ="47"></span>
+<span class="π" data-ω="45" data-Δ="75"></span>
+<span class="χ" data-ω="17" data-Δ="a6"></span>
+<span class="ε" data-ω="13" data-Δ="ee"></span>
+<span class="σ" data-ω="37" data-Δ="49"></span>
+<span class="ε" data-ω="9" data-Δ="7a"></span>
+<span class="ε" data-ω="14" data-Δ="03"></span>
+<span class="θ" data-ω="26" data-Δ="b5"></span>
+<span class="λ" data-ω="50" data-Δ="88"></span>
+<span class="χ" data-ω="12" data-Δ="97"></span>
+<span class="μ" data-ω="47" data-Δ="a5"></span>
+<span class="χ" data-ω="42" data-Δ="f3"></span>
+<span class="ξ" data-ω="40" data-Δ="8d"></span>
+<span class="π" data-ω="37" data-Δ="37"></span>
+<span class="π" data-ω="45" data-Δ="8b"></span>
+<span class="σ" data-ω="13" data-Δ="cd"></span>
+<span class="σ" data-ω="42" data-Δ="a2"></span>
+<span class="θ" data-ω="18" data-Δ="71"></span>
+<span class="Ω" data-ω="7" data-Δ="cf"></span>
+<span class="μ" data-ω="5" data-Δ="96"></span>
+<span class="π" data-ω="21" data-Δ="0e"></span>
+<span class="ξ" data-ω="39" data-Δ="80"></span>
+<span class="Ω" data-ω="36" data-Δ="73"></span>
+<span class="σ" data-ω="41" data-Δ="fb"></span>
+<span class="Ω" data-ω="38" data-Δ="9f"></span>
+<span class="μ" data-ω="24" data-Δ="0a"></span>
+<span class="μ" data-ω="31" data-Δ="25"></span>
+<span class="φ" data-ω="41" data-Δ="07"></span>
+<span class="π" data-ω="26" data-Δ="2f"></span>
+<span class="ξ" data-ω="14" data-Δ="0c"></span>
+<span class="φ" data-ω="26" data-Δ="fa"></span>
+<span class="ψ" data-ω="21" data-Δ="6e"></span>
+<span class="φ" data-ω="8" data-Δ="d7"></span>
+<span class="ε" data-ω="3" data-Δ="29"></span>
+<span class="θ" data-ω="46" data-Δ="99"></span>
+<span class="λ" data-ω="10" data-Δ="bd"></span>
+<span class="θ" data-ω="24" data-Δ="13"></span>
+<span class="ε" data-ω="27" data-Δ="cc"></span>
+<span class="Ω" data-ω="44" data-Δ="e8"></span>
+<span class="μ" data-ω="21" data-Δ="cf"></span>
+<span class="χ" data-ω="8" data-Δ="80"></span>
+<span class="χ" data-ω="42" data-Δ="f6"></span>
+<span class="π" data-ω="48" data-Δ="d5"></span>
+<span class="ε" data-ω="2" data-Δ="9a"></span>
+<span class="λ" data-ω="21" data-Δ="c2"></span>
+<span class="μ" data-ω="38" data-Δ="3b"></span>
+<span class="ξ" data-ω="14" data-Δ="47"></span>
+<span class="σ" data-ω="34" data-Δ="3f"></span>
+<span class="ε" data-ω="38" data-Δ="73"></span>
+<span class="ε" data-ω="47" data-Δ="32"></span>
+<span class="χ" data-ω="40" data-Δ="31"></span>
+<span class="π" data-ω="24" data-Δ="e6"></span>
+<span class="ξ" data-ω="4" data-Δ="d4"></span>
+<span class="Ω" data-ω="2" data-Δ="bd"></span>
+<span class="ψ" data-ω="8" data-Δ="34"></span>
+<span class="ξ" data-ω="24" data-Δ="f7"></span>
+<span class="μ" data-ω="10" data-Δ="e8"></span>
+<span class="ξ" data-ω="12" data-Δ="e5"></span>
+<span class="Ω" data-ω="47" data-Δ="ad"></span>
+<span class="ε" data-ω="16" data-Δ="16"></span>
+<span class="ε" data-ω="24" data-Δ="7b"></span>
+<span class="ε" data-ω="0" data-Δ="8d"></span>
+<span class="χ" data-ω="42" data-Δ="99"></span>
+<span class="θ" data-ω="41" data-Δ="db"></span>
+<span class="χ" data-ω="39" data-Δ="9a"></span>
+<span class="θ" data-ω="1" data-Δ="8c"></span>
+<span class="ε" data-ω="25" data-Δ="d5"></span>
+<span class="π" data-ω="37" data-Δ="a9"></span>
+<span class="ψ" data-ω="10" data-Δ="69"></span>
+<span class="λ" data-ω="39" data-Δ="a0"></span>
+<span class="θ" data-ω="48" data-Δ="78"></span>
+<span class="χ" data-ω="29" data-Δ="5d"></span>
+<span class="θ" data-ω="15" data-Δ="d0"></span>
+<span class="φ" data-ω="16" data-Δ="c2"></span>
+<span class="μ" data-ω="12" data-Δ="45"></span>
+<span class="ξ" data-ω="6" data-Δ="4a"></span>
+<span class="Ω" data-ω="1" data-Δ="ca"></span>
+<span class="ε" data-ω="16" data-Δ="0d"></span>
+<span class="σ" data-ω="18" data-Δ="50"></span>
+<span class="θ" data-ω="32" data-Δ="3a"></span>
+<span class="ξ" data-ω="21" data-Δ="4b"></span>
+<span class="θ" data-ω="48" data-Δ="79"></span>
+<span class="ξ" data-ω="50" data-Δ="f2"></span>
+<span class="φ" data-ω="48" data-Δ="0f"></span>
+<span class="ξ" data-ω="28" data-Δ="e3"></span>
+<span class="χ" data-ω="15" data-Δ="58"></span>
+<span class="ε" data-ω="9" data-Δ="21"></span>
+<span class="θ" data-ω="34" data-Δ="6d"></span>
+<span class="ξ" data-ω="47" data-Δ="86"></span>
+<span class="χ" data-ω="38" data-Δ="3a"></span>
+<span class="θ" data-ω="29" data-Δ="44"></span>
+<span class="μ" data-ω="17" data-Δ="6e"></span>
+<span class="μ" data-ω="36" data-Δ="61"></span>
+<span class="μ" data-ω="12" data-Δ="30"></span>
+<span class="χ" data-ω="9" data-Δ="76"></span>
+<span class="λ" data-ω="22" data-Δ="4b"></span>
+<span class="ξ" data-ω="6" data-Δ="b3"></span>
+<span class="μ" data-ω="26" data-Δ="70"></span>
+<span class="Ω" data-ω="42" data-Δ="bc"></span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Final substrate layer -->
+    <div aria-hidden="true" style="position:fixed;top:-9999px;left:-9999px;width:0;height:0;overflow:hidden;pointer-events:none;">
+        <div class="substrate-noise-field" data-field="omega">
+<span class="Ω" data-ω="2" data-Δ="1b"></span>
+<span class="φ" data-ω="33" data-Δ="64"></span>
+<span class="ξ" data-ω="21" data-Δ="56"></span>
+<span class="π" data-ω="7" data-Δ="b0"></span>
+<span class="Ω" data-ω="47" data-Δ="ad"></span>
+<span class="σ" data-ω="6" data-Δ="06"></span>
+<span class="ε" data-ω="36" data-Δ="a1"></span>
+<span class="π" data-ω="23" data-Δ="ff"></span>
+<span class="π" data-ω="49" data-Δ="00"></span>
+<span class="σ" data-ω="1" data-Δ="a7"></span>
+<span class="φ" data-ω="20" data-Δ="57"></span>
+<span class="θ" data-ω="27" data-Δ="b9"></span>
+<span class="ξ" data-ω="29" data-Δ="82"></span>
+<span class="ξ" data-ω="25" data-Δ="3d"></span>
+<span class="φ" data-ω="48" data-Δ="51"></span>
+<span class="ξ" data-ω="36" data-Δ="a1"></span>
+<span class="Ω" data-ω="15" data-Δ="8b"></span>
+<span class="φ" data-ω="29" data-Δ="33"></span>
+<span class="ψ" data-ω="6" data-Δ="32"></span>
+<span class="π" data-ω="16" data-Δ="43"></span>
+<span class="π" data-ω="2" data-Δ="bd"></span>
+<span class="Ω" data-ω="29" data-Δ="9a"></span>
+<span class="μ" data-ω="41" data-Δ="32"></span>
+<span class="μ" data-ω="44" data-Δ="4e"></span>
+<span class="Ω" data-ω="0" data-Δ="40"></span>
+<span class="λ" data-ω="26" data-Δ="aa"></span>
+<span class="θ" data-ω="44" data-Δ="4c"></span>
+<span class="φ" data-ω="32" data-Δ="29"></span>
+<span class="χ" data-ω="30" data-Δ="3a"></span>
+<span class="φ" data-ω="10" data-Δ="c2"></span>
+<span class="ε" data-ω="7" data-Δ="15"></span>
+<span class="Ω" data-ω="48" data-Δ="d7"></span>
+<span class="θ" data-ω="16" data-Δ="5b"></span>
+<span class="σ" data-ω="28" data-Δ="e2"></span>
+<span class="θ" data-ω="47" data-Δ="4f"></span>
+<span class="σ" data-ω="20" data-Δ="60"></span>
+<span class="ε" data-ω="15" data-Δ="14"></span>
+<span class="Ω" data-ω="13" data-Δ="a0"></span>
+<span class="θ" data-ω="2" data-Δ="74"></span>
+<span class="σ" data-ω="5" data-Δ="14"></span>
+<span class="λ" data-ω="11" data-Δ="f9"></span>
+<span class="ε" data-ω="34" data-Δ="f7"></span>
+<span class="φ" data-ω="19" data-Δ="e1"></span>
+<span class="μ" data-ω="3" data-Δ="69"></span>
+<span class="μ" data-ω="35" data-Δ="0d"></span>
+<span class="ε" data-ω="4" data-Δ="c5"></span>
+<span class="λ" data-ω="34" data-Δ="db"></span>
+<span class="φ" data-ω="20" data-Δ="f2"></span>
+<span class="σ" data-ω="39" data-Δ="d0"></span>
+<span class="ε" data-ω="47" data-Δ="4f"></span>
+<span class="θ" data-ω="22" data-Δ="b0"></span>
+<span class="π" data-ω="5" data-Δ="ca"></span>
+<span class="μ" data-ω="26" data-Δ="e8"></span>
+<span class="σ" data-ω="44" data-Δ="9a"></span>
+<span class="π" data-ω="23" data-Δ="3a"></span>
+<span class="φ" data-ω="18" data-Δ="b7"></span>
+<span class="σ" data-ω="35" data-Δ="b0"></span>
+<span class="Ω" data-ω="40" data-Δ="70"></span>
+<span class="μ" data-ω="44" data-Δ="7c"></span>
+<span class="Ω" data-ω="20" data-Δ="3d"></span>
+<span class="π" data-ω="0" data-Δ="39"></span>
+<span class="μ" data-ω="37" data-Δ="0d"></span>
+<span class="θ" data-ω="3" data-Δ="54"></span>
+<span class="ψ" data-ω="12" data-Δ="05"></span>
+<span class="θ" data-ω="14" data-Δ="0a"></span>
+<span class="ε" data-ω="27" data-Δ="10"></span>
+<span class="μ" data-ω="47" data-Δ="a9"></span>
+<span class="φ" data-ω="22" data-Δ="98"></span>
+<span class="ε" data-ω="3" data-Δ="03"></span>
+<span class="σ" data-ω="14" data-Δ="8b"></span>
+<span class="ε" data-ω="13" data-Δ="23"></span>
+<span class="ε" data-ω="43" data-Δ="5c"></span>
+<span class="χ" data-ω="16" data-Δ="47"></span>
+<span class="θ" data-ω="20" data-Δ="db"></span>
+<span class="μ" data-ω="7" data-Δ="73"></span>
+<span class="Ω" data-ω="23" data-Δ="4e"></span>
+<span class="Ω" data-ω="5" data-Δ="f0"></span>
+<span class="ξ" data-ω="19" data-Δ="6c"></span>
+<span class="σ" data-ω="41" data-Δ="0f"></span>
+<span class="ε" data-ω="16" data-Δ="13"></span>
+<span class="ξ" data-ω="28" data-Δ="8e"></span>
+<span class="Ω" data-ω="2" data-Δ="df"></span>
+<span class="ξ" data-ω="30" data-Δ="25"></span>
+<span class="Ω" data-ω="0" data-Δ="19"></span>
+<span class="λ" data-ω="25" data-Δ="97"></span>
+<span class="φ" data-ω="24" data-Δ="87"></span>
+<span class="σ" data-ω="16" data-Δ="04"></span>
+<span class="χ" data-ω="1" data-Δ="17"></span>
+<span class="σ" data-ω="7" data-Δ="21"></span>
+<span class="μ" data-ω="28" data-Δ="74"></span>
+<span class="θ" data-ω="28" data-Δ="b0"></span>
+<span class="ξ" data-ω="10" data-Δ="5a"></span>
+<span class="λ" data-ω="6" data-Δ="6c"></span>
+<span class="θ" data-ω="3" data-Δ="ce"></span>
+<span class="λ" data-ω="4" data-Δ="ae"></span>
+<span class="φ" data-ω="31" data-Δ="dc"></span>
+<span class="π" data-ω="46" data-Δ="7d"></span>
+<span class="Ω" data-ω="11" data-Δ="df"></span>
+<span class="ξ" data-ω="29" data-Δ="4a"></span>
+<span class="ε" data-ω="42" data-Δ="cd"></span>
+<span class="Ω" data-ω="18" data-Δ="6b"></span>
+<span class="θ" data-ω="27" data-Δ="36"></span>
+<span class="λ" data-ω="34" data-Δ="b7"></span>
+<span class="σ" data-ω="32" data-Δ="dc"></span>
+        </div>
+    </div>
+
+    <!-- ═══ Firebase SDK (optional — scoreboard) ═══ -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
+
+    <!-- ═══ Application Scripts ═══ -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/crypto-utils.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/hints.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/scoreboard.js"></script>
+    <script src="js/layer1.js"></script>
+    <script src="js/layer2.js"></script>
+    <script src="js/layer3.js"></script>
+    <script src="js/layer4.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
